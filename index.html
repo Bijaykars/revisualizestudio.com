@@ -181,6 +181,7 @@
 
         /* Headline */
         .headline-container {
+            height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -188,10 +189,16 @@
             position: relative;
         }
         .headline {
+            position: absolute;
+            width: 100%;
             font-size: 3rem;
             font-weight: 300;
             line-height: 1.1;
             letter-spacing: -0.025em;
+            display: none;
+        }
+        .headline.active {
+            display: block;
             animation: fadeIn 0.8s ease-out forwards;
         }
         .headline .bold {
@@ -203,18 +210,21 @@
             -webkit-text-fill-color: transparent;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         @media (min-width: 768px) {
+            .headline-container { height: 180px; }
             .headline { font-size: 4.5rem; }
         }
         @media (min-width: 1024px) {
+            .headline-container { height: 240px; }
             .headline { font-size: 6rem; }
         }
 
         /* Subtitle */
         .subtitle-container {
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -222,9 +232,14 @@
             position: relative;
         }
         .subtitle {
+            position: absolute;
             font-size: 1.125rem;
             color: #d4d4d8;
             font-weight: 300;
+            display: none;
+        }
+        .subtitle.active {
+            display: block;
             animation: fadeIn 0.8s ease-out 0.2s forwards;
             opacity: 0;
         }
@@ -395,14 +410,26 @@
                 <span class="badge-text">AI-Powered Architectural Visualization</span>
             </div>
 
-            <!-- Headline -->
-            <div class="headline-contElvat Yourbr><Prsentions
-                <h1 class="headline">Vision Becomes<span class="bold">Reality</span></h1>
+            <!-- Headlines -->
+            <div class="headline-container">
+                <h1 class="headline active" data-index="0">Vision Becomes<span class="bold">Reality</span></h1>
+                <h1 class="headline" data-index="1">Design Without<span class="bold">Boundaries</span></h1>
+                <h1 class="headline" data-index="2">Imagine It,<span class="bold">Render It</span></h1>
+                <h1 class="headline" data-index="3">Elevate Your<span class="bold">Presentations</span></h1>
+                <h1 class="headline" data-index="4">Create Like<span class="bold">Never Before</span></h1>
+                <h1 class="headline" data-index="5">The Future of<span class="bold">Architecture</span></h1>
+                <h1 class="headline" data-index="6">Craft Your<span class="bold">Masterpiece</span></h1>
             </div>
 
-            <!-- Subtitle -->
-            <div class="subtitle-conImpaeesliewhsunning visu thabig gs tolif
-                <p class="subtitle">Transform concepts into photorealistic renders in seconds.</p>
+            <!-- Subtitles -->
+            <div class="subtitle-container">
+                <p class="subtitle active" data-index="0">Transform concepts into photorealistic renders in seconds.</p>
+                <p class="subtitle" data-index="1">From sketch to masterpiece — let AI do the heavy lifting.</p>
+                <p class="subtitle" data-index="2">Professional architectural visualization at your fingertips.</p>
+                <p class="subtitle" data-index="3">Impress clients with stunning visuals that bring designs to life.</p>
+                <p class="subtitle" data-index="4">Visualize any architectural style in moments with AI.</p>
+                <p class="subtitle" data-index="5">Join thousands of architects revolutionizing their workflow.</p>
+                <p class="subtitle" data-index="6">Where imagination meets architectural excellence.</p>
             </div>
 
             <!-- Buttons -->
@@ -445,6 +472,14 @@
             // Update slides
             document.querySelectorAll('.hero-slide').forEach((slide, i) => {
                 slide.classList.toggle('active', i === index);
+            });
+            // Update headlines
+            document.querySelectorAll('.headline').forEach((h, i) => {
+                h.classList.toggle('active', i === index);
+            });
+            // Update subtitles
+            document.querySelectorAll('.subtitle').forEach((s, i) => {
+                s.classList.toggle('active', i === index);
             });
             // Update indicators
             document.querySelectorAll('.indicator').forEach((ind, i) => {
