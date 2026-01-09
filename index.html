@@ -184,7 +184,7 @@
 
         /* Headline */
         .headline-container {
-            height: 120px;
+            height: clamp(120px, 28vw, 200px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -193,16 +193,23 @@
         }
         .headline {
             position: absolute;
-            width: 100%;
-            font-size: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(92vw, 1100px);
+            font-size: clamp(1.6rem, 7.5vw, 5rem);
             font-weight: 300;
-            line-height: 1.2;
-            letter-spacing: -0.025em;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            text-align: center;
             display: none;
         }
         .headline.active {
             display: block;
             animation: fadeIn 0.8s ease-out forwards;
+        }
+        .headline-line {
+            display: block;
+            white-space: nowrap;
         }
         .headline .bold {
             font-weight: 600;
@@ -215,14 +222,7 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        @media (min-width: 768px) {
-            .headline-container { height: 160px; }
-            .headline { font-size: 4rem; }
-        }
-        @media (min-width: 1024px) {
-            .headline-container { height: 200px; }
-            .headline { font-size: 5rem; }
-        }
+
 
         /* Subtitle */
         .subtitle-container {
@@ -414,13 +414,13 @@
 
             <!-- Headlines -->
             <div class="headline-container">
-                <h1 class="headline active" data-index="0">Vision Becomes<br><span class="bold">Reality</span></h1>
-                <h1 class="headline" data-index="1">Design Without<br><span class="bold">Boundaries</span></h1>
-                <h1 class="headline" data-index="2">Imagine It,<br><span class="bold">Render It</span></h1>
-                <h1 class="headline" data-index="3">Elevate Your<br><span class="bold">Presentations</span></h1>
-                <h1 class="headline" data-index="4">Create Like<br><span class="bold">Never Before</span></h1>
-                <h1 class="headline" data-index="5">The Future of<br><span class="bold">Architecture</span></h1>
-                <h1 class="headline" data-index="6">Craft Your<br><span class="bold">Masterpiece</span></h1>
+                <h1 class="headline active" data-index="0"><span class="headline-line">Vision Becomes</span><span class="headline-line bold">Reality</span></h1>
+                <h1 class="headline" data-index="1"><span class="headline-line">Design Without</span><span class="headline-line bold">Boundaries</span></h1>
+                <h1 class="headline" data-index="2"><span class="headline-line">Imagine It,</span><span class="headline-line bold">Render It</span></h1>
+                <h1 class="headline" data-index="3"><span class="headline-line">Elevate Your</span><span class="headline-line bold">Presentations</span></h1>
+                <h1 class="headline" data-index="4"><span class="headline-line">Create Like</span><span class="headline-line bold">Never Before</span></h1>
+                <h1 class="headline" data-index="5"><span class="headline-line">The Future of</span><span class="headline-line bold">Architecture</span></h1>
+                <h1 class="headline" data-index="6"><span class="headline-line">Craft Your</span><span class="headline-line bold">Masterpiece</span></h1>
             </div>
 
             <!-- Subtitles -->
