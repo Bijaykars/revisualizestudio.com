@@ -7,89 +7,207 @@
     <meta name="description" content="AI-powered architectural visualization. Transform your designs into stunning photorealistic renders.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: url('bg.jpg') center center / cover no-repeat fixed;
-            font-family: 'Inter', system-ui, sans-serif;
+            background-color: #18181b;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: white;
-            text-align: center;
+            overflow: hidden;
             position: relative;
         }
-        .overlay {
+
+        /* Background Image with Ken Burns effect */
+        .hero-bg {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%);
+            z-index: 0;
+        }
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: kenBurns 20s ease-in-out infinite alternate;
+        }
+        @keyframes kenBurns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* Gradient Overlays - matching landing page */
+        .overlay-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.8) 100%);
             z-index: 1;
         }
+        .overlay-side {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 50%, rgba(0,0,0,0.5) 100%);
+            z-index: 1;
+        }
+
+        /* Content */
         .content {
             position: relative;
-            z-index: 2;
-            padding: 40px;
+            z-index: 10;
+            max-width: 72rem;
+            padding: 1.5rem;
+            text-align: center;
         }
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
+
+        /* Badge - AI Powered pill */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        .badge-dot {
+            position: relative;
+            width: 0.5rem;
+            height: 0.5rem;
+        }
+        .badge-dot-ping {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #34d399;
+            opacity: 0.75;
+            animation: ping 1s cubic-bezier(0,0,0.2,1) infinite;
+        }
+        .badge-dot-solid {
+            position: relative;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: #10b981;
+        }
+        @keyframes ping {
+            75%, 100% { transform: scale(2); opacity: 0; }
+        }
+        .badge-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.875rem;
             font-weight: 500;
-            letter-spacing: 4px;
-            margin-bottom: 30px;
-            text-shadow: 2px 4px 20px rgba(0,0,0,0.5);
+            letter-spacing: 0.025em;
         }
-        h1 span {
-            display: block;
-            font-size: 4.5rem;
+
+        /* Main Headline */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        h1 .bold {
             font-weight: 600;
-            background: linear-gradient(90deg, #fff, #d4af37, #fff);
+            background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.7));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: shine 4s linear infinite;
         }
-        @keyframes shine {
-            to { background-position: 200% center; }
-        }
-        .divider {
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #d4af37, transparent);
-            margin: 0 auto 30px;
-        }
-        p {
-            font-size: 1.4rem;
+
+        /* Subtitle */
+        .subtitle {
+            font-size: 1.25rem;
+            color: #d4d4d8;
             font-weight: 300;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.9);
-            text-shadow: 1px 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: 0.025em;
+            margin-bottom: 3rem;
         }
-        .tagline {
-            margin-top: 40px;
+
+        /* Coming Soon Button */
+        .coming-soon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: white;
+            color: #18181b;
+            font-weight: 600;
             font-size: 1rem;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.7);
-            text-transform: none;
+            border-radius: 9999px;
+            border: none;
+            cursor: default;
+            box-shadow: 0 0 40px -10px rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
         }
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            h1 span { font-size: 3rem; }
-            p { font-size: 1rem; letter-spacing: 4px; }
+        .coming-soon-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 50px -5px rgba(255,255,255,0.4);
+        }
+        .coming-soon-btn svg {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            h1 { font-size: 4.5rem; }
+            .subtitle { font-size: 1.25rem; }
+        }
+        @media (min-width: 1024px) {
+            h1 { font-size: 6rem; }
         }
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
+    <!-- Background Image -->
+    <div class="hero-bg">
+        <img src="bg.jpg" alt="AI-generated architectural render">
+    </div>
+    
+    <!-- Gradient Overlays -->
+    <div class="overlay-gradient"></div>
+    <div class="overlay-side"></div>
+
+    <!-- Content -->
     <div class="content">
-        <h1>ReVisualize <span>Studio</span></h1>
-        <div class="divider"></div>
-        <p>Coming Soon</p>
-        <p class="tagline">AI-Powered Architectural Visualization</p>
+        <!-- Badge -->
+        <div class="badge">
+            <span class="badge-dot">
+                <span class="badge-dot-ping"></span>
+                <span class="badge-dot-solid"></span>
+            </span>
+            <span class="badge-text">AI-Powered Architectural Visualization</span>
+        </div>
+
+        <!-- Headline -->
+        <h1>
+            Vision Becomes<br>
+            <span class="bold">Reality</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="subtitle">Transform concepts into photorealistic renders in seconds.</p>
+
+        <!-- Coming Soon Button -->
+        <button class="coming-soon-btn">
+            Coming Soon
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        </button>
     </div>
 </body>
 </html>
