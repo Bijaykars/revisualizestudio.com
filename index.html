@@ -194,14 +194,15 @@
             line-height: 1.1;
             letter-spacing: -0.025em;
             opacity: 0;
-            transform: translateY(40px);
-            filter: blur(10px);
-            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out, visibility 0s 0.5s;
         }
         .headline.active {
             opacity: 1;
-            transform: translateY(0);
-            filter: blur(0);
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 0.8s ease-in 0.3s, visibility 0s 0s;
         }
         .headline .bold {
             display: block;
@@ -233,12 +234,13 @@
             color: #d4d4d8;
             font-weight: 300;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+            visibility: hidden;
+            transition: opacity 0.5s ease-out, visibility 0s 0.5s;
         }
         .subtitle.active {
             opacity: 1;
-            transform: translateY(0);
+            visibility: visible;
+            transition: opacity 0.8s ease-in 0.5s, visibility 0s 0s;
         }
         @media (min-width: 768px) {
             .subtitle { font-size: 1.25rem; }
@@ -378,25 +380,25 @@
     <section class="hero">
         <!-- Background Slides -->
         <div class="hero-slide active" data-index="0">
-            <img src="hero-1.jpeg" alt="AI architectural render">
+            <img src="hero-1.jpg" alt="AI architectural render" loading="eager">
         </div>
         <div class="hero-slide" data-index="1">
-            <img src="hero-2.jpeg" alt="AI architectural render">
+            <img src="hero-2.jpg" alt="AI architectural render" loading="lazy">
         </div>
         <div class="hero-slide" data-index="2">
-            <img src="hero-3.jpeg" alt="AI architectural render">
+            <img src="hero-3.jpg" alt="AI architectural render" loading="lazy">
         </div>
         <div class="hero-slide" data-index="3">
-            <img src="hero-4.jpeg" alt="AI architectural render">
+            <img src="hero-4.jpg" alt="AI architectural render" loading="lazy">
         </div>
         <div class="hero-slide" data-index="4">
-            <img src="hero-5.jpeg" alt="AI architectural render">
+            <img src="hero-5.jpg" alt="AI architectural render" loading="lazy">
         </div>
         <div class="hero-slide" data-index="5">
-            <img src="hero-6.jpeg" alt="AI architectural render">
+            <img src="hero-6.jpg" alt="AI architectural render" loading="lazy">
         </div>
         <div class="hero-slide" data-index="6">
-            <img src="hero-7.jpeg" alt="AI architectural render">
+            <img src="hero-7.jpg" alt="AI architectural render" loading="lazy">
         </div>
 
         <!-- Hero Content -->
