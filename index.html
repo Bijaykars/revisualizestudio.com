@@ -7,56 +7,125 @@
     <meta name="description" content="AI-powered architectural visualization. Transform your designs into stunning photorealistic renders.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             background-color: #18181b;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: white;
-            overflow: hidden;
-            position: relative;
+            overflow-x: hidden;
         }
 
-        /* Background Image with Ken Burns effect */
-        .hero-bg {
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+        }
+        .nav-container {
+            max-width: 80rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 300;
+            letter-spacing: -0.025em;
+        }
+        .logo span { font-weight: 600; }
+        .nav-links {
+            display: none;
+            align-items: center;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: white; }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .nav-right a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        .btn-get-started {
+            background: white;
+            color: #18181b;
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-get-started:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Background Images */
+        .hero-slide {
             position: absolute;
             inset: 0;
-            z-index: 0;
+            opacity: 0;
+            transform: scale(1.1);
+            transition: opacity 1.5s ease-in-out, transform 8s ease-out;
         }
-        .hero-bg img {
+        .hero-slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .hero-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            animation: kenBurns 20s ease-in-out infinite alternate;
         }
-        @keyframes kenBurns {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-
-        /* Gradient Overlays - matching landing page */
-        .overlay-gradient {
+        .hero-slide::after {
+            content: '';
             position: absolute;
             inset: 0;
             background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.8) 100%);
-            z-index: 1;
         }
-        .overlay-side {
+        .hero-slide::before {
+            content: '';
             position: absolute;
             inset: 0;
             background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 50%, rgba(0,0,0,0.5) 100%);
             z-index: 1;
         }
 
-        /* Content */
-        .content {
+        /* Hero Content */
+        .hero-content {
             position: relative;
             z-index: 10;
             max-width: 72rem;
@@ -64,7 +133,7 @@
             text-align: center;
         }
 
-        /* Badge - AI Powered pill */
+        /* Badge */
         .badge {
             display: inline-flex;
             align-items: center;
@@ -75,14 +144,14 @@
             border-radius: 9999px;
             border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         }
         .badge-dot {
             position: relative;
             width: 0.5rem;
             height: 0.5rem;
         }
-        .badge-dot-ping {
+        .badge-dot::before {
+            content: '';
             position: absolute;
             width: 100%;
             height: 100%;
@@ -91,10 +160,11 @@
             opacity: 0.75;
             animation: ping 1s cubic-bezier(0,0,0.2,1) infinite;
         }
-        .badge-dot-solid {
-            position: relative;
-            width: 0.5rem;
-            height: 0.5rem;
+        .badge-dot::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             background: #10b981;
         }
@@ -105,40 +175,88 @@
             color: rgba(255,255,255,0.9);
             font-size: 0.875rem;
             font-weight: 500;
-            letter-spacing: 0.025em;
         }
 
-        /* Main Headline */
-        h1 {
-            font-size: 3.5rem;
+        /* Headline */
+        .headline-container {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .headline {
+            position: absolute;
+            font-size: 3rem;
             font-weight: 300;
             line-height: 1.1;
             letter-spacing: -0.025em;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(40px);
+            filter: blur(10px);
+            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        h1 .bold {
+        .headline.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+        .headline .bold {
+            display: block;
             font-weight: 600;
             background: linear-gradient(to bottom, #fff, rgba(255,255,255,0.7));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
-        /* Subtitle */
-        .subtitle {
-            font-size: 1.25rem;
-            color: #d4d4d8;
-            font-weight: 300;
-            letter-spacing: 0.025em;
-            margin-bottom: 3rem;
+        @media (min-width: 768px) {
+            .headline { font-size: 4.5rem; }
+        }
+        @media (min-width: 1024px) {
+            .headline { font-size: 6rem; }
         }
 
-        /* Coming Soon Button */
-        .coming-soon-btn {
-            display: inline-flex;
+        /* Subtitle */
+        .subtitle-container {
+            height: 40px;
+            display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .subtitle {
+            position: absolute;
+            font-size: 1.125rem;
+            color: #d4d4d8;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+        }
+        .subtitle.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @media (min-width: 768px) {
+            .subtitle { font-size: 1.25rem; }
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            justify-content: center;
+            align-items: center;
+        }
+        @media (min-width: 640px) {
+            .buttons { flex-direction: row; }
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
             gap: 0.75rem;
             padding: 1rem 2rem;
             background: white;
@@ -147,67 +265,240 @@
             font-size: 1rem;
             border-radius: 9999px;
             border: none;
-            cursor: default;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
             box-shadow: 0 0 40px -10px rgba(255,255,255,0.3);
-            transition: all 0.3s ease;
         }
-        .coming-soon-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 50px -5px rgba(255,255,255,0.4);
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: transparent;
+            color: white;
+            font-weight: 500;
+            font-size: 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s;
         }
-        .coming-soon-btn svg {
-            width: 1.125rem;
-            height: 1.125rem;
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.4);
         }
 
-        /* Responsive */
-        @media (min-width: 768px) {
-            h1 { font-size: 4.5rem; }
-            .subtitle { font-size: 1.25rem; }
+        /* Slide Indicators */
+        .indicators {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 20;
         }
-        @media (min-width: 1024px) {
-            h1 { font-size: 6rem; }
+        .indicator {
+            height: 4px;
+            width: 8px;
+            border-radius: 9999px;
+            background: rgba(255,255,255,0.4);
+            border: none;
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+        .indicator.active {
+            width: 32px;
+            background: white;
+        }
+        .indicator:hover {
+            background: rgba(255,255,255,0.6);
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: none;
+        }
+        .scroll-mouse {
+            width: 24px;
+            height: 40px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 9999px;
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+            animation: bounce 2s infinite;
+        }
+        .scroll-dot {
+            width: 4px;
+            height: 8px;
+            background: white;
+            border-radius: 9999px;
+            animation: scrollDot 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+        @keyframes scrollDot {
+            0%, 100% { height: 4px; opacity: 0.5; }
+            50% { height: 8px; opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <!-- Background Image -->
-    <div class="hero-bg">
-        <img src="bg.jpg" alt="AI-generated architectural render">
-    </div>
-    
-    <!-- Gradient Overlays -->
-    <div class="overlay-gradient"></div>
-    <div class="overlay-side"></div>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">ReVisualize <span>Studio</span></div>
+            <div class="nav-links">
+                <a href="#">Gallery</a>
+                <a href="#">Features</a>
+                <a href="#">Pricing</a>
+                <a href="#">FAQ</a>
+                <a href="#">About</a>
+            </div>
+            <div class="nav-right">
+                <a href="#">Sign In</a>
+                <a href="#" class="btn-get-started">Get Started</a>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Content -->
-    <div class="content">
-        <!-- Badge -->
-        <div class="badge">
-            <span class="badge-dot">
-                <span class="badge-dot-ping"></span>
-                <span class="badge-dot-solid"></span>
-            </span>
-            <span class="badge-text">AI-Powered Architectural Visualization</span>
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Background Slides -->
+        <div class="hero-slide active" data-index="0">
+            <img src="hero-1.jpeg" alt="AI architectural render">
+        </div>
+        <div class="hero-slide" data-index="1">
+            <img src="hero-2.jpeg" alt="AI architectural render">
+        </div>
+        <div class="hero-slide" data-index="2">
+            <img src="hero-3.jpeg" alt="AI architectural render">
+        </div>
+        <div class="hero-slide" data-index="3">
+            <img src="hero-4.jpeg" alt="AI architectural render">
+        </div>
+        <div class="hero-slide" data-index="4">
+            <img src="hero-5.jpeg" alt="AI architectural render">
+        </div>
+        <div class="hero-slide" data-index="5">
+            <img src="hero-6.jpeg" alt="AI architectural render">
+        </div>
+        <div class="hero-slide" data-index="6">
+            <img src="hero-7.jpeg" alt="AI architectural render">
         </div>
 
-        <!-- Headline -->
-        <h1>
-            Vision Becomes<br>
-            <span class="bold">Reality</span>
-        </h1>
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <!-- Badge -->
+            <div class="badge">
+                <span class="badge-dot"></span>
+                <span class="badge-text">AI-Powered Architectural Visualization</span>
+            </div>
 
-        <!-- Subtitle -->
-        <p class="subtitle">Transform concepts into photorealistic renders in seconds.</p>
+            <!-- Headlines -->
+            <div class="headline-container">
+                <h1 class="headline active" data-index="0">Vision Becomes<span class="bold">Reality</span></h1>
+                <h1 class="headline" data-index="1">Design Without<span class="bold">Boundaries</span></h1>
+                <h1 class="headline" data-index="2">Imagine It,<span class="bold">Render It</span></h1>
+                <h1 class="headline" data-index="3">Elevate Your<span class="bold">Presentations</span></h1>
+                <h1 class="headline" data-index="4">Create Like<span class="bold">Never Before</span></h1>
+                <h1 class="headline" data-index="5">The Future of<span class="bold">Architecture</span></h1>
+                <h1 class="headline" data-index="6">Craft Your<span class="bold">Masterpiece</span></h1>
+            </div>
 
-        <!-- Coming Soon Button -->
-        <button class="coming-soon-btn">
-            Coming Soon
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-        </button>
-    </div>
+            <!-- Subtitles -->
+            <div class="subtitle-container">
+                <p class="subtitle active" data-index="0">Transform concepts into photorealistic renders in seconds.</p>
+                <p class="subtitle" data-index="1">From sketch to masterpiece — let AI do the heavy lifting.</p>
+                <p class="subtitle" data-index="2">Professional architectural visualization at your fingertips.</p>
+                <p class="subtitle" data-index="3">Impress clients with stunning visuals that bring designs to life.</p>
+                <p class="subtitle" data-index="4">Visualize any architectural style in moments with AI.</p>
+                <p class="subtitle" data-index="5">Join thousands of architects revolutionizing their workflow.</p>
+                <p class="subtitle" data-index="6">Where imagination meets architectural excellence.</p>
+            </div>
+
+            <!-- Buttons -->
+            <div class="buttons">
+                <button class="btn-primary">
+                    Coming Soon
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </button>
+                <button class="btn-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Watch Demo
+                </button>
+            </div>
+        </div>
+
+        <!-- Slide Indicators -->
+        <div class="indicators">
+            <button class="indicator active" data-index="0"></button>
+            <button class="indicator" data-index="1"></button>
+            <button class="indicator" data-index="2"></button>
+            <button class="indicator" data-index="3"></button>
+            <button class="indicator" data-index="4"></button>
+            <button class="indicator" data-index="5"></button>
+            <button class="indicator" data-index="6"></button>
+        </div>
+    </section>
+
+    <script>
+        // Slideshow functionality
+        let currentSlide = 0;
+        const totalSlides = 7;
+        const interval = 6000; // 6 seconds per slide
+
+        function goToSlide(index) {
+            // Update slides
+            document.querySelectorAll('.hero-slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            // Update headlines
+            document.querySelectorAll('.headline').forEach((h, i) => {
+                h.classList.toggle('active', i === index);
+            });
+            // Update subtitles
+            document.querySelectorAll('.subtitle').forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+            });
+            // Update indicators
+            document.querySelectorAll('.indicator').forEach((ind, i) => {
+                ind.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            goToSlide((currentSlide + 1) % totalSlides);
+        }
+
+        // Auto-advance slides
+        let slideInterval = setInterval(nextSlide, interval);
+
+        // Click on indicators
+        document.querySelectorAll('.indicator').forEach(indicator => {
+            indicator.addEventListener('click', () => {
+                clearInterval(slideInterval);
+                goToSlide(parseInt(indicator.dataset.index));
+                slideInterval = setInterval(nextSlide, interval);
+            });
+        });
+    </script>
 </body>
 </html>
